@@ -1,0 +1,76 @@
+@import "src/custom-style.scss";
+button {
+  font-size: 17px;
+  width: auto;
+  line-height: 11px;
+  padding-top: 7px;
+  border-radius: 21px;
+  padding-bottom: 7px;
+  margin-right: 3%;
+}
+.parent-button {
+  background-color: mat-color($accent, 10) !important;
+  color: mat-color($accent, 900) !important;
+}
+
+.level1-button {
+  background-color: gray !important;
+  color: mat-color($accent, 10) !important;
+}
+.level2-button {
+  background-color: #a5a5a5 !important;
+  color: mat-color($accent, 10) !important;
+}
+
+.select-warn {
+  color: mat-color($warn);
+}
+
+.selected {
+  color: mat-color($accent, 10) !important;
+  background-color: #46b946 !important;  // mat-color($accent, 400)
+}
+
+.mat-icon {
+  margin-right: 0px !important;
+  cursor: pointer;
+}
+
+.right-sidebar {
+  min-height: -webkit-fill-available !important;
+  background-color: #f2f2f2 !important;
+  .mat-sidenav-content {
+    top: 2%;
+    padding-left: 3rem;
+  }
+}
+mat-sidenav-content > div > div {
+  flex: none;
+}
+
+i.icon-blue {
+  color: orange;
+  cursor: pointer;
+}
+.btn-circle {
+  width: 18px;
+  margin-left: -29%;
+  margin-top: -9%;
+  align-self: center;
+}
+
+.icon-size {
+  width: 18px !important;
+  margin-left: -3rem !important;
+  margin-top: -2rem !important;
+}
+.parent-icon {
+  width: 18px;
+}
+.title {
+  justify-content: center;
+  padding: 0;
+  margin-top: 13%;
+  font-size: 14px;
+  color: black;
+}

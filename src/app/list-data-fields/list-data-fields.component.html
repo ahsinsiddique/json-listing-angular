@@ -1,0 +1,121 @@
+<div fxFlex="100" fxFlexFill>
+    <mat-sidenav-container class="right-sidebar">
+        <mat-spinner></mat-spinner>
+
+        <mat-sidenav-content fxLayout="column">
+            <p class="title">Select Fields</p>
+            <ng-container *ngFor="let field of data">
+                <div fxFlex="25" style="margin-top: 5px; max-height: 5%">
+                    <ng-container>
+                        <div fxLayout="row" fxFlexFill>
+                            <div fxFlex="9">
+                                <i id="parentMatIcon" *ngIf="field.selected" class="check-icon">
+                                    <img [src]="imagesPath.DataFieldSelected" alt="" height="13px" width="13px">
+                                </i>
+                            </div>
+                            <div fxFlex>
+                                <div fxLayout="row" fxFlexFill>
+                                    <button class="parent-button" id="parentFieldBtn" *ngIf="field.key"
+                                        [disabled]="!field.value" [ngClass]="{'selected':field.selected}"
+                                        (click)="saveDataField(field, false)" mat-button>
+                                        {{field.key}}
+                                    </button>
+                                    <div *ngIf="isArray(field.value)" (click)="toggleLevelOne(field)"
+                                        class="parent-icon">
+                                        <i class="large material-icons icon-blue"
+                                            *ngIf="!field.isOpen; else removeIcon">
+                                            add_circle_outline </i>
+                                        <ng-template #removeIcon>
+                                            <i class="large material-icons icon-blue">
+                                                remove_circle_outline </i>
+                                        </ng-template>
+                                    </div>
+                                </div>
+
+
+                                <div *ngIf="!field.value" class="select-warn">
+                                    You cannot select this property
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </ng-container>
+                </div>
+                <div *ngIf="isArray(field.value) && field.isOpen" fxFlex="75" fxLayout="column">
+
+                    <div *ngFor="let xfield of field.value">
+                        <div>
+                            <div *ngIf="field.key" style=" margin-top: 5px">
+                                <div fxLayout="row" fxFlexFill>
+                                    <div fxFlex="9">
+                                        <i id="childMatIcon" *ngIf="xfield.selected" class="check-icon">
+                                            <img [src]="imagesPath.DataFieldSelected" alt="" height="13px" width="13px">
+                                        </i>
+                                    </div>
+
+                                    <div fxFlex>
+                                        <button [disabled]="!xfield.value" class="level1-button" id="childFieldBtn"
+                                            [ngClass]="{'selected':xfield.selected}"
+                                            (click)="saveDataField(xfield,false, field.key)" mat-button>
+                                            {{xfield.key}}
+                                        </button>
+                                        <button mat-button *ngIf="isArray(xfield.value)"
+                                            (click)="toggleLevelOne(xfield)">
+                                            <i class="large material-icons icon-blue"
+                                                *ngIf="!xfield.isOpen; else removeIcon">
+                                                add_circle_outline </i>
+                                            <ng-template #removeIcon>
+                                                <i class="large material-icons icon-blue">
+                                                    remove_circle_outline </i>
+                                            </ng-template>
+
+                                        </button>
+
+                                        <div *ngIf="!xfield.value" class="select-warn">
+                                            You cannot select this property
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div *ngIf="isArray(xfield.value) && xfield.isOpen" fxLayout="column">
+        
+                            <div *ngFor="let child of xfield.value">
+                                <div>
+                                    <div *ngIf="child.key" style="margin-top: 5px">
+                                        <div fxLayout="row" fxFlexFill>
+                                            <div fxFlex="9">
+                                                <i id="childMatIcon2" *ngIf="child.selected" class="check-icon">
+                                                    <img [src]="imagesPath.DataFieldSelected" alt="" height="13px"
+                                                        width="13px">
+                                                </i>
+                                            </div>
+
+                                            <div fxFlex>
+                                                <button [disabled]="!child.value" class="level2-button"
+                                                    id="childFieldBtn" [ngClass]="{'selected':child.selected}"
+                                                    (click)="saveDataField(child,true, field.key+'.'+xfield.key)"
+                                                    mat-button>
+                                                    {{child.key}}
+                                                </button>
+                                                <div *ngIf="!child.value" class="select-warn">
+                                                    You cannot select this property
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
