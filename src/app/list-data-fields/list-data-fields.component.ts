@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { KeyValuePipe } from '@angular/common';
+import { EmitterService } from '../shared/emitter.service';
 @Component({
   selector: 'edf-list-data-fields',
   templateUrl: './list-data-fields.component.html',
@@ -20,46 +21,65 @@ export class ListDataFieldsComponent implements OnInit, OnChanges {
   imagesPath;// = ImagesPath;
   public expandKey;
   isParentClicked = false;
-   newDAta; 
+  renderHtml: any;
+
+
+  emitter = EmitterService.get("channel_1");
+
   constructor(private http: HttpClient) {
 
   }
 
   ngOnInit() {
-   // this.parentName+= +'.'+this.data.key;
     console.log(this.parentName);
-    // if (this.isParent) {
-    //   this.data.Results.forEach((x)=> this.saveDataField(x));
-    // }
- //   this.onParentFieldClick();
-
   }
   ngOnChanges(changes: SimpleChanges) {
-  //  this.newDAta = this.mapJsonToArray(this.data); 
-
-    // if (this.prevState.length > 0) {
-    //   this.setupPreviousState();
-    // }
-    if (this.isParent) {
-      this.onParentFieldClick();
-    }
-
   }
-  onParentFieldClick() {
-    let f = [];
-    if (!this.data) {
-      return;
+
+  /**
+   * 
+   * @param event key-value pair
+   */
+  onParentFieldClick(event) {
+    let fieldLen;
+
+    if (event.selected && event.value) {
+      this.isParentClicked = true;
+
+      event.value.forEach(field => {
+        /////////////////////////////////////////////////////////****************************** */
+        if (this.isArray(field.value)) {
+          fieldLen = field.value.length;
+        }
+
+        field.selected = true;
+        this.emitter.emit(field);
+
+        if (fieldLen > 0) {
+          this.onParentFieldClick(field);
+        }
+
+      })
+    } else if (!event.selected && event.value) {
+
+      this.isParentClicked = false;
+      /////////////////////////////////////////////////////////****************************** */
+      event.value.forEach(field => {
+
+        if (this.isArray(field.value)) {
+          fieldLen = field.value.length;
+        }
+        /////////////////////////////////////////////////////////****************************** */
+        field.selected = false;
+        this.emitter.emit(field);
+
+        if (fieldLen > 0) {
+          this.onParentFieldClick(field);
+        }
+      })
     }
-    var key: any
-    //  for (key in this.data) {
-    ///  if (key.hasOwnProperty(key)) {
-    //console.log(key + ": ");
-    // console.log(JSON.stringify(this.data[key]) + " :#@ ");
-    //     this.data[key]["selected"] = true;
-    //   }
-   debugger
-   console.log(this.newDAta);
   }
+
 
   isArray(obj: any) {
     return Array.isArray(obj);
@@ -73,9 +93,16 @@ export class ListDataFieldsComponent implements OnInit, OnChanges {
     if (label && label != '') {
       this.selectedField.key = label + '.' + event.key;      // in case of parent property
     }
+    event.parentName = this.parentName;
+    this.emitter.emit(event);
+
     this.valueSelected(event, isChild);
   }
   valueSelected(event: any, isChild = null) {
+    let fieldLen = 0;
+    if (this.isArray(event.value)) {
+      fieldLen = event.value.length;
+    }
     if (!event.selected) {
       event.selected = true;
       this.selectedField.selected = true;
@@ -83,21 +110,10 @@ export class ListDataFieldsComponent implements OnInit, OnChanges {
     } else {
       event.selected = false;
       this.selectedField.selected = false;
-
-      this.nameSelected.emit(this.selectedField);
     }
-
-    if (event.selected && event.value) {
-      this.isParentClicked = true;
-    } else {
-      this.isParentClicked = false;
+    if (fieldLen > 0) {
+      this.onParentFieldClick(event);
     }
-    // if (this.isObject(event.value)) {
-    //   Array.from(event.value).forEach(field => {
-    //     // field.selected = !field.selected;
-    //     this.valueSelected(field);
-    //   });
-    // }
     return;
   }
   private setupPreviousState() {

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { EmitterService } from './shared/emitter.service';
 
 @Component({
   selector: 'app-root',
@@ -7,10 +8,14 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'app-dataFields';
   data$;
   data;
+  emitter = EmitterService.get("channel_1");
+
   constructor(private http: HttpClient) {
+    this.emitter.subscribe(msg => {
+      console.log(msg);
+    });
 
   }
   ngOnInit() {
