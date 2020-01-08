@@ -1,31 +1,71 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { KeyValuePipe } from '@angular/common';
 @Component({
   selector: 'edf-list-data-fields',
   templateUrl: './list-data-fields.component.html',
   styleUrls: ['./list-data-fields.component.scss']
 })
 export class ListDataFieldsComponent implements OnInit, OnChanges {
+  //data$: Observable<any>;
   @Input() data: any;
+  @Input() parentName = '';
+  @Input() isParent: boolean;
   @Output() nameSelected = new EventEmitter();
   @Input() prevState;
   observeable = new Observable<any>();
   showLevelOne = false;
   selectedField: any;
-  imagesPath ;// = ImagesPath;
+  imagesPath;// = ImagesPath;
   public expandKey;
-  constructor() {
+  isParentClicked = false;
+   newDAta; 
+  constructor(private http: HttpClient) {
+
   }
+
   ngOnInit() {
+   // this.parentName+= +'.'+this.data.key;
+    console.log(this.parentName);
+    // if (this.isParent) {
+    //   this.data.Results.forEach((x)=> this.saveDataField(x));
+    // }
+ //   this.onParentFieldClick();
+
   }
   ngOnChanges(changes: SimpleChanges) {
-    if (this.prevState.length > 0) {
-      this.setupPreviousState();
+  //  this.newDAta = this.mapJsonToArray(this.data); 
+
+    // if (this.prevState.length > 0) {
+    //   this.setupPreviousState();
+    // }
+    if (this.isParent) {
+      this.onParentFieldClick();
     }
 
   }
+  onParentFieldClick() {
+    let f = [];
+    if (!this.data) {
+      return;
+    }
+    var key: any
+    //  for (key in this.data) {
+    ///  if (key.hasOwnProperty(key)) {
+    //console.log(key + ": ");
+    // console.log(JSON.stringify(this.data[key]) + " :#@ ");
+    //     this.data[key]["selected"] = true;
+    //   }
+   debugger
+   console.log(this.newDAta);
+  }
+
   isArray(obj: any) {
     return Array.isArray(obj);
+  }
+  isObject(obj: any): boolean {
+    return typeof (obj) === 'object' ? true : false;
   }
 
   saveDataField(event: any, isChild = null, label?: string) {
@@ -46,13 +86,18 @@ export class ListDataFieldsComponent implements OnInit, OnChanges {
 
       this.nameSelected.emit(this.selectedField);
     }
-    if (this.isArray(event.value)) {
-      event.value.forEach(field => {
-        if (!isChild && !event.selected) { field.selected = true }
-        else if (!isChild && event.selected) { field.selected = false }
-        this.valueSelected(field, isChild);
-      });
+
+    if (event.selected && event.value) {
+      this.isParentClicked = true;
+    } else {
+      this.isParentClicked = false;
     }
+    // if (this.isObject(event.value)) {
+    //   Array.from(event.value).forEach(field => {
+    //     // field.selected = !field.selected;
+    //     this.valueSelected(field);
+    //   });
+    // }
     return;
   }
   private setupPreviousState() {

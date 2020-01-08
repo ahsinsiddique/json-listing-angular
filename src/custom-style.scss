@@ -1,0 +1,268 @@
+@import "~@angular/material/theming";
+
+
+$adhoc-typography: mat-typography-config(
+  $font-family: "HelveticaNeue,Roboto, monospace",
+  $headline: mat-typography-level(30px, 48px, 700),
+  $body-1: mat-typography-level(13px, 24px, 500),
+  $body-2: mat-typography-level(14px, 30px, 500),
+  $display-1: mat-typography-level(25px, 34px, 100),
+  $caption: mat-typography-level(12.5px, 24px, 100),
+  $display-4: mat-typography-level(45px, 34px, 100),
+  $display-2: mat-typography-level(20px, 20px, 700),
+  $display-3: mat-typography-level(35px, 34px, 100),
+  $subheading-2:  mat-typography-level(23px, 25px, 400),
+  $subheading-1:  mat-typography-level(18px, 24px, 400),
+);
+$my-own-gray: (
+  10: #fff,
+  50: #dedede,
+  100: #c2c2c2,
+  200: #adacac,
+  300: #969393,
+  400: #8b8b8a,
+  500: #707070,
+  600: #4e4e4e,
+  700: #4d4d4d,
+  800: #2b2b2b,
+  900: #0f0f0f,
+  A100: #e9e7e6,
+  A200: #c9c3be,
+  A400: #96928f,
+  A700: #4d4c4b,
+  contrast: (
+    50: $black-87-opacity,
+    100: $black-87-opacity,
+    200: $black-87-opacity,
+    300: $black-87-opacity,
+    400: $black-87-opacity,
+    500: white,
+    600: white,
+    700: white,
+    800: $white-87-opacity,
+    900: $white-87-opacity,
+    A100: $black-87-opacity,
+    A200: white,
+    A400: white,
+    A700: white
+  )
+);
+@include mat-core($adhoc-typography);
+$accent: mat-palette($my-own-gray);
+
+body,
+html {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  color: gray;
+  font-size: mat-font-size($adhoc-typography, body-2);
+  font-family: mat-font-family($adhoc-typography);
+  line-height: mat-line-height($adhoc-typography, body-1);
+}
+
+body {
+  overflow: auto;
+}
+
+
+/*Mixins--start*/
+@mixin margin-left-mixin($pixel) {
+  margin-left: $pixel;
+}
+@mixin padding-top-mixin($pixel) {
+  padding-top: $pixel;
+}
+@mixin margin-top-mixin($pixel) {
+  margin-top: $pixel;
+}
+@mixin margin-right-mixin($pixel) {
+  margin-right: $pixel;
+}
+@mixin padding-right-mixin($pixel) {
+  padding-right: $pixel;
+}
+@mixin padding-left-mixin($pixel) {
+  padding-left: $pixel;
+}
+/*Mixins--end*/
+
+.label-circle {
+  color: mat-color($accent, A100);
+  font-size: mat-font-size($adhoc-typography, display-2);
+  padding-left: 27%;
+  padding-top: 16%;
+}
+.search-box {
+  line-height: 40px;
+  height: 38px;
+  vertical-align: middle;
+  border-radius: 20px;
+  width: 85%;
+  padding-left: 10px;
+  margin-left: 30px;
+  border: 1px solid mat-color($accent, 400);
+  margin: 0%;
+}
+
+
+.snack-success {
+  background-color: mat-color($accent, 10);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: 1px solid mat-color($accent, 600);
+  color: mat-color($accent);
+}
+.mleft {
+  @include margin-left-mixin(var(--left));
+}
+.mtop {
+  @include margin-top-mixin(var(--top));
+}
+.mright {
+  @include margin-right-mixin(var(--right));
+}
+.pad-right {
+  @include padding-right-mixin(2%);
+}
+
+.btn-width {
+  width: 20%;
+  height: 2%;
+}
+.button.btn-cornered {
+  border-radius: 0;
+}
+.btn-raised:not([disabled]) {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+.text-center {
+  text-align: center;
+}
+.text-class {
+  padding-bottom: 2%;
+  padding-top: 2%;
+  width: 90%;
+  border-radius: 7px;
+}
+.pad-left-2 {
+  @include padding-left-mixin(2%);
+}
+.input-pc-path {
+  @include padding-left-mixin(2%);
+  width: 38%;
+  margin-left: 4%;
+}
+.input-tango-fields {
+  @include padding-left-mixin(2%);
+  width: 55%;
+  margin-left: 4%;
+}
+input {
+  padding-top: 1%;
+}
+textarea {
+  padding-top: 1% !important;
+}
+
+.tab-body {
+  height: 72%;
+  margin-left: 15%;
+}
+.divider-width {
+  width: 40%;
+}
+.mleft-15 {
+  margin-left: 15%;
+}
+.mtop-m50 {
+  margin-top: -50%;
+}
+.modal {
+  mat-dialog-container {
+    padding: 0px !important;
+    // width:60% !important;
+    // height: 60% !important;
+    // margin-left: 23%;
+  }
+}
+mat-checkbox,
+mat-radio-button {
+  padding-right: 4%;
+}
+
+.snack-error {
+  background-color: #f9dedb;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: 1px solid #e0b7b7;
+  color: #494949;
+}
+
+.snack-success {
+  background-color: #dff0d8;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: 1px solid #dff0d8;
+  color: black;
+}
+.snack-loading {
+  background-color: #8a6d3b;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: 1px solid #8a6d3b;
+  color: #494949;
+}
+
+
+::ng-deep .mat-tooltip  {
+  max-width: 300px !important;
+  white-space: pre-line !important;
+}
+
+mat-slide-toggle:hover{
+  opacity: 0.7;
+}
+
+.btn-rounded {
+  border-radius: 50%;
+}
+
+.btn-md {
+  height: 75px;
+  width: 75px;
+}
+.h4 {
+  font-size: mat-font-size($adhoc-typography, display-4);
+}
+
+.h3 {
+  font-size: mat-font-size($adhoc-typography, display-3);
+}
+
+.form-creation-title {
+  padding: 0;
+  padding-left: 10%;
+  font-size: 15px;
+  color: black;
+  margin-top: 3%;
+  margin-bottom: 3%;
+}
+
+.form-creation-header {
+  background-color: #e1e1e1;
+}
+::ng-deep .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label{
+  font-size: mat-font-size($adhoc-typography,subheading-1);
+
+}
+
+
+
+
+.passwordInput {
+    
+  -webkit-text-security:disc;
+  -mox-text-security:disc;
+}
+

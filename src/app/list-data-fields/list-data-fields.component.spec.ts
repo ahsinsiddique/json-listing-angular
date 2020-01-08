@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ListDataFieldsComponent } from './list-data-fields..component';
+import { ListDataFieldsComponent } from './list-data-fields.component';
 import { By } from '@angular/platform-browser';
 import {NO_ERRORS_SCHEMA,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 

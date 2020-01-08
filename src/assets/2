@@ -1,0 +1,36 @@
+{
+  "name": "Jungle Gym",
+  "age": 25,
+  "favorite_color": "#ffa500",
+  "gender": "male",
+  "location": {
+    "city": "Seattle",
+    "state": "WA",
+    "citystate": "Seattle, WA",
+     "location2": {
+    "city2": "Islamabad",
+    "state2": "WA",
+    "citystate2": "Seattle, WA",
+      "location3": {
+    "city3": "Islamabad",
+    "state2": "WA",
+    "citystate2": "Seattle, WA",
+      "location2": {
+    "city2": "Islamabad",
+    "state2": "WA",
+    "citystate2": "Seattle, WA"
+  }
+  }
+  }
+  },
+  "pets": [
+    {
+      "type": "dog",
+      "name": "Foo"
+    },
+    {
+      "type": "cat",
+      "name": "Bar"
+    }
+  ]
+}

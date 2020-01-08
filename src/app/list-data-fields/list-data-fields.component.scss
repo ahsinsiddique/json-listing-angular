@@ -1,4 +1,4 @@
-@import "src/custom-style.scss";
+@import "../../custom-style.scss";
 button {
   font-size: 17px;
   width: auto;
@@ -22,9 +22,7 @@ button {
   color: mat-color($accent, 10) !important;
 }
 
-.select-warn {
-  color: mat-color($warn);
-}
+
 
 .selected {
   color: mat-color($accent, 10) !important;
@@ -37,11 +35,11 @@ button {
 }
 
 .right-sidebar {
-  min-height: -webkit-fill-available !important;
+  // min-height: -webkit-fill-available !important;
   background-color: #f2f2f2 !important;
   .mat-sidenav-content {
     top: 2%;
-    padding-left: 3rem;
+    padding-left: 1rem;
   }
 }
 mat-sidenav-content > div > div {
