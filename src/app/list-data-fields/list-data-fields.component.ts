@@ -1,7 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { KeyValuePipe } from '@angular/common';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+
 import { EmitterService } from '../shared/emitter.service';
 @Component({
   selector: 'edf-list-data-fields',
@@ -9,13 +7,11 @@ import { EmitterService } from '../shared/emitter.service';
   styleUrls: ['./list-data-fields.component.scss']
 })
 export class ListDataFieldsComponent implements OnInit, OnChanges {
-  //data$: Observable<any>;
+
   @Input() data: any;
   @Input() parentName = '';
   @Input() isParent: boolean;
-  @Output() nameSelected = new EventEmitter();
   @Input() prevState;
-  observeable = new Observable<any>();
   showLevelOne = false;
   selectedField: any;
   imagesPath;// = ImagesPath;
@@ -26,7 +22,7 @@ export class ListDataFieldsComponent implements OnInit, OnChanges {
 
   emitter = EmitterService.get("channel_1");
 
-  constructor(private http: HttpClient) {
+  constructor() {
 
   }
 
@@ -60,6 +56,8 @@ export class ListDataFieldsComponent implements OnInit, OnChanges {
           this.emitter.emit(field);
         }
         if (fieldLen > 0) {
+          field.isParent = true;
+          this.parentName = field.parentName;
           this.onParentFieldClick(field);
         }
 
@@ -83,6 +81,9 @@ export class ListDataFieldsComponent implements OnInit, OnChanges {
         }
 
         if (fieldLen > 0) {
+          this.parentName = field.parentName;
+
+          field.isParent = true;
           this.onParentFieldClick(field);
         }
       })
@@ -97,17 +98,17 @@ export class ListDataFieldsComponent implements OnInit, OnChanges {
     return typeof (obj) === 'object' ? true : false;
   }
 
-  saveDataField(event: any, isParent = null, label?: string) {
+  saveDataField(event: any) {
     this.selectedField = { ...event };
-    if (label && label != '') {
-      this.selectedField.key = label + '.' + event.key;      // in case of parent property
-    }
     event.parentName = this.parentName;
     this.emitter.emit(event);
-
-    this.valueSelected(event, isParent);
+    this.valueSelected(event);
   }
-  valueSelected(event: any, isParent = null) {
+
+  /**
+   * @param event 
+   */
+  valueSelected(event: any) {
     let fieldLen = 0;
     if (this.isArray(event.value)) {
       fieldLen = event.value.length;
@@ -115,7 +116,7 @@ export class ListDataFieldsComponent implements OnInit, OnChanges {
     if (!event.selected) {
       event.selected = true;
       this.selectedField.selected = true;
-      this.nameSelected.emit(this.selectedField);
+      //     this.emitter.emit(this.selectedField);                   // re-evaluate abou ti 
     } else {
       event.selected = false;
       this.selectedField.selected = false;
@@ -149,7 +150,7 @@ export class ListDataFieldsComponent implements OnInit, OnChanges {
         fields.forEach(field => {
           if (field.key === name[index]) {
             field.selected = true;
-            this.nameSelected.emit({ dataField, status: true, selected: true })
+            this.emitter.emit({ dataField, status: true, selected: true })    // re-evaluate
             return;
             // mark as selected
           }
@@ -169,11 +170,15 @@ export class ListDataFieldsComponent implements OnInit, OnChanges {
     }
 
   }
+
+  /**
+   * @param event 
+   */
   private setDefaultFields(event) {
     const status = true;
     this.prevState.forEach((field) => {
       if (field.name === event.key) {
-        this.nameSelected.emit({ field, status });
+        this.emitter.emit({ field, status });              // re-evaluate....
         event.selected = true;
         return;
       }
@@ -186,6 +191,10 @@ export class ListDataFieldsComponent implements OnInit, OnChanges {
     }
     return;
   }
+
+  /**
+   * @param nameToExpand On json-field, toggle expand
+   */
   toggleLevel(nameToExpand) {
     if (!nameToExpand.isOpen) {
       nameToExpand.isOpen = true;

@@ -18,7 +18,7 @@
                                 <div fxLayout="row" fxFlexFill>
                                     <button class="parent-button" id="parentFieldBtn" *ngIf="field.key"
                                          [ngClass]="{'selected':field.selected}"
-                                        (click)="saveDataField(field, false)" mat-button>
+                                        (click)="saveDataField(field)" mat-button>
                                         {{field.key}}
                                     </button>
                                     <div *ngIf="isObject(field.value)" (click)="toggleLevel(field)"
@@ -34,9 +34,9 @@
                                 </div>
 
 
-                                <!-- <div *ngIf="isArray(field.value)" style="color: red;">
+                                <div *ngIf="!field.value" style="color: red;">
                                     You cannot select Array property
-                                </div> -->
+                                </div>
 
                             </div>
                         </div>

@@ -29,14 +29,19 @@ export class AppComponent implements OnInit {
   isObject(obj: any): boolean {
     return typeof (obj) === 'object' ? true : false;
   }
-  mapJsonToArray(object) {
+  mapJsonToArray(object: any) {
     let arr: any;
+    if (Array.isArray(object)) {
+      return;
+    }
     arr = Object.entries(object).map(([key, value]) => ({ key, value }));
-    arr.forEach((item) => {
-      if (this.isObject(item.value)) {
+    arr.forEach((item, ind) => {
+      if (Array.isArray(item)) {
+        item[ind].value = null;
+      } else if (this.isObject(item.value)) {
         item.value = this.mapJsonToArray(item.value);
       }
-    })
+    });
     return arr;
   }
 }
