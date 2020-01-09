@@ -41,20 +41,24 @@ export class ListDataFieldsComponent implements OnInit, OnChanges {
    * @param event key-value pair
    */
   onParentFieldClick(event) {
-    let fieldLen;
 
+    let fieldLen;
     if (event.selected && event.value) {
       this.isParentClicked = true;
 
+      /////////////////////////////////////////////////////////****************************** */
       event.value.forEach(field => {
-        /////////////////////////////////////////////////////////****************************** */
         if (this.isArray(field.value)) {
           fieldLen = field.value.length;
         }
+        if (!field.selected) {               // if chile field is already selected
 
-        field.selected = true;
-        this.emitter.emit(field);
-
+          field.selected = true;               // set field status
+          if (!field.isParent) {           // update parent name
+            field.parentName = this.parentName + '.' + event.key;
+          }
+          this.emitter.emit(field);
+        }
         if (fieldLen > 0) {
           this.onParentFieldClick(field);
         }
@@ -70,8 +74,13 @@ export class ListDataFieldsComponent implements OnInit, OnChanges {
           fieldLen = field.value.length;
         }
         /////////////////////////////////////////////////////////****************************** */
-        field.selected = false;
-        this.emitter.emit(field);
+        if (field.selected) {               // if chile field is already not-selected
+          field.selected = false;
+          if (!field.isParent) {
+            field.parentName = this.parentName + '.' + event.key;
+          }
+          this.emitter.emit(field);
+        }
 
         if (fieldLen > 0) {
           this.onParentFieldClick(field);
@@ -88,7 +97,7 @@ export class ListDataFieldsComponent implements OnInit, OnChanges {
     return typeof (obj) === 'object' ? true : false;
   }
 
-  saveDataField(event: any, isChild = null, label?: string) {
+  saveDataField(event: any, isParent = null, label?: string) {
     this.selectedField = { ...event };
     if (label && label != '') {
       this.selectedField.key = label + '.' + event.key;      // in case of parent property
@@ -96,9 +105,9 @@ export class ListDataFieldsComponent implements OnInit, OnChanges {
     event.parentName = this.parentName;
     this.emitter.emit(event);
 
-    this.valueSelected(event, isChild);
+    this.valueSelected(event, isParent);
   }
-  valueSelected(event: any, isChild = null) {
+  valueSelected(event: any, isParent = null) {
     let fieldLen = 0;
     if (this.isArray(event.value)) {
       fieldLen = event.value.length;
@@ -112,6 +121,7 @@ export class ListDataFieldsComponent implements OnInit, OnChanges {
       this.selectedField.selected = false;
     }
     if (fieldLen > 0) {
+      event.isParent = true;
       this.onParentFieldClick(event);
     }
     return;
@@ -128,11 +138,11 @@ export class ListDataFieldsComponent implements OnInit, OnChanges {
 
   private setDefaultField(dataField) {
     var name = dataField.name.split(".");
-    this.setDefaultFielsSelected(name, 0, this.data, name.length, dataField); //  pass initial values
+    this.setDefaultFieldsSelected(name, 0, this.data, name.length, dataField); //  pass initial values
     return;
   }
 
-  setDefaultFielsSelected(name: [], index: number, fields, levelIndex, dataField) {
+  setDefaultFieldsSelected(name: [], index: number, fields, levelIndex, dataField) {
     let _fields = [];
     if (name.length > index) {
       if (levelIndex < 2) {   // final step to mark as selected
@@ -153,7 +163,7 @@ export class ListDataFieldsComponent implements OnInit, OnChanges {
         });
         index += 1;
         levelIndex -= 1;
-        this.setDefaultFielsSelected(name, index, _fields, levelIndex, dataField);
+        this.setDefaultFieldsSelected(name, index, _fields, levelIndex, dataField);
       }
 
     }
@@ -176,7 +186,7 @@ export class ListDataFieldsComponent implements OnInit, OnChanges {
     }
     return;
   }
-  toggleLevelOne(nameToExpand) {
+  toggleLevel(nameToExpand) {
     if (!nameToExpand.isOpen) {
       nameToExpand.isOpen = true;
     } else {

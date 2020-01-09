@@ -21,7 +21,7 @@
                                         (click)="saveDataField(field, false)" mat-button>
                                         {{field.key}}
                                     </button>
-                                    <div *ngIf="isObject(field.value)" (click)="toggleLevelOne(field)"
+                                    <div *ngIf="isObject(field.value)" (click)="toggleLevel(field)"
                                         class="parent-icon">
                                         <i class="large material-icons icon-blue"
                                             *ngIf="!field.isOpen; else removeIcon">
@@ -44,7 +44,7 @@
                     </ng-container>
                 </div>
                 <div *ngIf="field.isOpen">
-                    <edf-list-data-fields [data]="field.value" [isParent]="isParentClicked" 
+                    <edf-list-data-fields [data]="field.value" [isParent]="true" 
                     [parentName]="parentName? parentName+'.'+field.key: field.key"></edf-list-data-fields>
                 </div>
 
